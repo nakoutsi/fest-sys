@@ -39,7 +39,7 @@ public class PerformanceService {
         }
 
         festival.getPerformances().add(performance);
-        performance.setFestivalId(festival.getId());
+        performance.setFestival(festival);
 
         loggedUser.getMain_artist_in().add(festivalId);
         performance.setMain_artist(loggedUser);
@@ -59,7 +59,7 @@ public class PerformanceService {
     }
 
     public List<Performance> getPerformancesByFestival(String festivalId) {
-        return performanceRepository.findByFestivalId(festivalId);
+        return performanceRepository.findByFestival_Id(festivalId);
     }
 
     public void deletePerformance(String id) {

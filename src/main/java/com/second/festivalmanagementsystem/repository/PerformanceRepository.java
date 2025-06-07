@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface PerformanceRepository extends JpaRepository<Performance, String> {
     // Find performances by festival ID
-    List<Performance> findByFestivalId(String festivalId);
+    List<Performance> findByFestival_Id(String festivalId);
 
     // Find performances by state
     List<Performance> findByState(String state);
@@ -20,9 +20,9 @@ public interface PerformanceRepository extends JpaRepository<Performance, String
     List<Performance> findByGenre(String genre);
 
     // Find performances by festival ID and state
-    List<Performance> findByFestivalIdAndState(String festivalId, String state);
+    List<Performance> findByFestival_IdAndState(String festivalId, String state);
 
-    @Query("SELECT p FROM Performance p WHERE p.genre = ?1 AND p.festivalId = ?2")
+    @Query("SELECT p FROM Performance p WHERE p.genre = ?1 AND p.festival.id = ?2")
     List<Performance> findByCriteria(String genre, String festivalId);
 
 

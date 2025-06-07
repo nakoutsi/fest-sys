@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -39,9 +40,20 @@ public class Festival {
     private String vendorManagement;
     private FestivalState state = FestivalState.CREATED; // Possible values: CREATED, SUBMISSION, ASSIGNMENT, etc.
 
-    private HashSet<User> organizers = new HashSet<>();
-    private HashSet<Performance> performances = new HashSet<>();
-    private HashSet<User> staff = new HashSet<>();
+    @ManyToMany
+    @JoinTable(name = "festival_organizers",
+            joinColumns = @JoinColumn(name = "festival_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> organizers = new HashSet<>();
+
+    @OneToMany(mappedBy = "festival", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Performance> performances = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "festival_staff",
+            joinColumns = @JoinColumn(name = "festival_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> staff = new HashSet<>();
 
 
     // Constructors, Getters, Setters, etc.
