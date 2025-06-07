@@ -28,7 +28,6 @@ public class Performance {
     private User main_artist;
     private HashSet<User> artists;
     private User stage_manager;
-    private String festival_id;
     // Constructors, Getters, Setters, etc.
 
     public Performance() {}
