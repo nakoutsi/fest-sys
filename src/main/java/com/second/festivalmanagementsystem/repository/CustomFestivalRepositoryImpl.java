@@ -33,11 +33,15 @@ public class CustomFestivalRepositoryImpl implements CustomFestivalRepository {
         if (description != null && !description.isEmpty()) {
             predicates.add(cb.like(cb.lower(festival.get("description")), "%" + description.toLowerCase() + "%"));
         }
-        if (startDate != null) {
-            predicates.add(cb.greaterThanOrEqualTo(festival.get("startDate"), startDate));
-        }
-        if (endDate != null) {
-            predicates.add(cb.lessThanOrEqualTo(festival.get("endDate"), endDate));
+        if (startDate != null && endDate != null) {
+            predicates.add(cb.between(festival.get("startDate"), startDate, endDate));
+        } else {
+            if (startDate != null) {
+                predicates.add(cb.greaterThanOrEqualTo(festival.get("startDate"), startDate));
+            }
+            if (endDate != null) {
+                predicates.add(cb.lessThanOrEqualTo(festival.get("endDate"), endDate));
+            }
         }
         if (venue != null && !venue.isEmpty()) {
             predicates.add(cb.equal(festival.get("venue"), venue));
