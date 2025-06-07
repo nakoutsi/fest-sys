@@ -104,7 +104,8 @@ public class PerformanceService {
         if (performance.getState() != PerformanceState.CREATED) {
             throw new PerformanceException("Performance is not created.");
         }
-        if (!performance.getMain_artist().equals(loggedUser) || !performance.getArtists().contains(loggedUser)) {
+        if (!performance.getMain_artist().equals(loggedUser) &&
+                !performance.getArtists().contains(loggedUser)) {
             throw new PerformanceException("User is not artist in this performance");
         }
 
