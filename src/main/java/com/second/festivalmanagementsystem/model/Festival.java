@@ -4,9 +4,7 @@ import com.second.festivalmanagementsystem.enums.FestivalState;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -14,12 +12,14 @@ import java.util.HashSet;
 
 @Setter
 @Getter
-@Document(collection = "festivals")
+@Entity
+@Table(name = "festivals")
 public class Festival {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private LocalDate created = LocalDate.now();
-    @Indexed(unique = true)
+    @Column(unique = true)
     @NotNull(message = "Festival's name must not be null")
     private String name;
 

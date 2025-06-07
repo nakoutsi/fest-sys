@@ -5,12 +5,10 @@ import com.second.festivalmanagementsystem.exceptions.FestivalException;
 import com.second.festivalmanagementsystem.model.Festival;
 import com.second.festivalmanagementsystem.model.User;
 import com.second.festivalmanagementsystem.repository.CustomFestivalRepository;
-import com.second.festivalmanagementsystem.repository.CustomFestivalRepositoryImpl;
+
 import com.second.festivalmanagementsystem.repository.FestivalRepository;
 import com.second.festivalmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -201,32 +199,8 @@ public class FestivalService {
         return "All users were added as staff!";
     }
 
-    //name of the festival, its description, dates, and venue
+    // Filter festivals using optional criteria
     public List<Festival> findFestivalsByFilters(String name, String description, Date startDate, Date endDate, String venue) {
-        // Create a new Criteria object
-        Criteria criteria = new Criteria();
-
-        // Add conditions dynamically based on non-null parameters
-        if (name != null && !name.isEmpty()) {
-            criteria.and("name").is(name);
-        }
-        if (description != null && !description.isEmpty()) {
-            criteria.and("description").regex(description, "i"); // Case-insensitive regex
-        }
-        if (startDate != null) {
-            criteria.and("dates.start").gte(startDate); // Assuming "dates.start" is the field for the start date
-        }
-        if (endDate != null) {
-            criteria.and("dates.end").lte(endDate); // Assuming "dates.end" is the field for the end date
-        }
-        if (venue != null && !venue.isEmpty()) {
-            criteria.and("venue").is(venue);
-        }
-
-        // Build the query with the dynamic criteria
-        Query query = new Query(criteria);
-
-        // Execute the query using MongoTemplate
-        return festivalRepository.findFestivalsByQuery(query);
+        return festivalRepository.findFestivalsByFilters(name, description, startDate, endDate, venue);
     }
 }

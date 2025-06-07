@@ -3,17 +3,18 @@ package com.second.festivalmanagementsystem.model;
 import com.second.festivalmanagementsystem.enums.PerformanceState;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.List;
 
 @Setter
 @Getter
-@Document(collection = "performances")
+@Entity
+@Table(name = "performances")
 public class Performance {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String name;
     private String description;
