@@ -129,9 +129,9 @@ public class FestivalService {
     public void finalFestival(String id) throws FestivalException {
         Festival festival = festivalRepository.findById(id)
                 .orElseThrow(() -> new FestivalException("Festival not found."));
-        if (festival.getState() != FestivalState.FINAL_SUBMISSION) {
-            throw new FestivalException("Only festivals in REVIEW state can be scheduled.");
-        }else{
+        if (festival.getState() != FestivalState.SCHEDULING) {
+            throw new FestivalException("Only festivals in SCHEDULING state can move to FINAL_SUBMISSION.");
+        } else {
             festival.setState(FestivalState.FINAL_SUBMISSION);
             festivalRepository.save(festival);
         }
@@ -141,8 +141,8 @@ public class FestivalService {
         Festival festival = festivalRepository.findById(id)
                 .orElseThrow(() -> new FestivalException("Festival not found."));
         if (festival.getState() != FestivalState.FINAL_SUBMISSION) {
-            throw new FestivalException("Only festivals in REVIEW state can be scheduled.");
-        }else{
+            throw new FestivalException("Only festivals in FINAL_SUBMISSION state can move to DECISION.");
+        } else {
             festival.setState(FestivalState.DECISION);
             festivalRepository.save(festival);
         }
@@ -152,8 +152,8 @@ public class FestivalService {
         Festival festival = festivalRepository.findById(id)
                 .orElseThrow(() -> new FestivalException("Festival not found."));
         if (festival.getState() != FestivalState.DECISION) {
-            throw new FestivalException("Only festivals in REVIEW state can be scheduled.");
-        }else{
+            throw new FestivalException("Only festivals in DECISION state can be announced.");
+        } else {
             festival.setState(FestivalState.ANNOUNCED);
             festivalRepository.save(festival);
         }
