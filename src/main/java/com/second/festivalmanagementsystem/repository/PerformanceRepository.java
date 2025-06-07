@@ -1,12 +1,12 @@
 package com.second.festivalmanagementsystem.repository;
 
 import com.second.festivalmanagementsystem.model.Performance;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface PerformanceRepository extends MongoRepository<Performance, String> {
+public interface PerformanceRepository extends JpaRepository<Performance, String> {
     // Find performances by festival ID
     List<Performance> findByFestivalId(String festivalId);
 
@@ -22,7 +22,7 @@ public interface PerformanceRepository extends MongoRepository<Performance, Stri
     // Find performances by festival ID and state
     List<Performance> findByFestivalIdAndState(String festivalId, String state);
 
-    @Query("{ $and: [ { 'genre': ?0 }, { 'festivalId': ?1 } ] }")
+    @Query("SELECT p FROM Performance p WHERE p.genre = ?1 AND p.festivalId = ?2")
     List<Performance> findByCriteria(String genre, String festivalId);
 
 

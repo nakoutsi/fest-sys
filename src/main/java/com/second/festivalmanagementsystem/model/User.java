@@ -4,18 +4,19 @@ import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Objects;
 
 @Setter
 @Getter
-@Document(collection = "users")
+@Entity
+@Table(name = "users")
 @EqualsAndHashCode(of = {"username"})
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     // @Field("username")
     @NotNull(message = "User's username must not be null")
