@@ -37,8 +37,10 @@ public class FestivalService {
         }
 
         festival.getOrganizers().add(loggeduser);
-        loggeduser.getOrganizer_in().add(festival.getId());
-        return festivalRepository.save(festival);
+        Festival saved = festivalRepository.save(festival);
+        loggeduser.getOrganizer_in().add(saved.getId());
+        userRepository.save(loggeduser);
+        return saved;
 
     }
 
