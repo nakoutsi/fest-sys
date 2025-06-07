@@ -45,7 +45,6 @@ public class PerformanceService {
         performance.setMain_artist(loggedUser);
 
         festivalRepository.save(festival);
-        festivalRepository.save(festival);
         userRepository.save(loggedUser);
         return performanceRepository.save(performance);
     }
@@ -83,7 +82,7 @@ public class PerformanceService {
             throw new FestivalException("Performance is not created.");
         }
 
-        if (!performance.getMain_artist().equals(loggedUser) || !performance.getArtists().contains(loggedUser)) {
+        if (!performance.getMain_artist().equals(loggedUser) && !performance.getArtists().contains(loggedUser)) {
             throw new FestivalException("User is not artist in this performance");
         }
 
