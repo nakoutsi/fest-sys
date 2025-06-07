@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -20,24 +21,36 @@ public class Performance {
     private String description;
     private String genre;
     private int duration; // Duration in minutes
-    private String festivalId; // Reference to Festival
+    @ManyToOne
+    @JoinColumn(name = "festival_id")
+    private Festival festival; // Reference to Festival
     private List<String> bandMembers; // User IDs of band members
     private String technicalRequirements; // File path or content
     private PerformanceState state; // Possible values: CREATED, SUBMITTED, REVIEWED, etc.
 
+    @ManyToOne
+    @JoinColumn(name = "main_artist_id")
     private User main_artist;
-    private HashSet<User> artists;
+
+    @ManyToMany
+    @JoinTable(name = "performance_artists",
+            joinColumns = @JoinColumn(name = "performance_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> artists = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "stage_manager_id")
     private User stage_manager;
     // Constructors, Getters, Setters, etc.
 
     public Performance() {}
 
-    public Performance(String name, String description, String genre, int duration, String festivalId, List<String> bandMembers, String technicalRequirements, PerformanceState state) {
+    public Performance(String name, String description, String genre, int duration, Festival festival, List<String> bandMembers, String technicalRequirements, PerformanceState state) {
         this.name = name;
         this.description = description;
         this.genre = genre;
         this.duration = duration;
-        this.festivalId = festivalId;
+        this.festival = festival;
         this.bandMembers = bandMembers;
         this.technicalRequirements = technicalRequirements;
         this.state = state;
