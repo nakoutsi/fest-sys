@@ -94,8 +94,12 @@ public class FestivalController {
 
     // Get a festival by ID
     @GetMapping("/{id}")
-    public ResponseEntity<?> getFestivalById(@RequestHeader("Authorization") String authHeader,@PathVariable String id) {
-        return ResponseEntity.ok(festivalService.getFestivalById(id));
+    public ResponseEntity<?> getFestivalById(@RequestHeader("Authorization") String authHeader, @PathVariable String id) {
+        Optional<Festival> festival = festivalService.getFestivalById(id);
+        if (festival.isPresent()) {
+            return ResponseEntity.ok(festival.get());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/search")
