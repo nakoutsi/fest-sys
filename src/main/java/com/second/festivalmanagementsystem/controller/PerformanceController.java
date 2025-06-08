@@ -47,6 +47,8 @@ public class PerformanceController {
             performance.setState(PerformanceState.CREATED); // Default state
             Performance createdPerformance = performanceService.createPerformance(performance, loggedUser, id);
             return ResponseEntity.ok(createdPerformance);
+        } catch (PerformanceException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating performance: " + e.getMessage());
         }

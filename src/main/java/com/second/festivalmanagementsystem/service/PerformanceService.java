@@ -29,12 +29,16 @@ public class PerformanceService {
     @Autowired
     private FestivalRepository festivalRepository;
 
-    public Performance createPerformance(Performance performance, User loggedUser, String festivalId) throws FestivalException {
+    public Performance createPerformance(Performance performance, User loggedUser, String festivalId) throws FestivalException, PerformanceException {
         Festival festival = festivalRepository.findById(festivalId)
                 .orElseThrow(() -> new FestivalException("Festival not found."));
 
         if (festival.getStaff().contains(loggedUser) || festival.getOrganizers().contains(loggedUser)) {
             throw new FestivalException("User cannot perform this performance as he is organizer or staff.");
+        }
+
+        if (performanceRepository.findByNameAndFestival_Id(performance.getName(), festivalId).isPresent()) {
+            throw new PerformanceException("Performance already exists for this festival.");
         }
 
         festival.getPerformances().add(performance);
