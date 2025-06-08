@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -26,11 +27,16 @@ public class User {
     @NotNull(message = "User's full name must not be null")
     private String fullName;
 
-    private HashSet<String> main_artist_in = new HashSet<>();
-    private HashSet<String> artist_in = new HashSet<>();
-    private HashSet<String> stage_manager = new HashSet<>();
-    private HashSet<String> organizer_in = new HashSet<>();
-    private HashSet<String> staff_in = new HashSet<>();
+    @ElementCollection
+    private Set<String> main_artist_in = new HashSet<>();
+    @ElementCollection
+    private Set<String> artist_in = new HashSet<>();
+    @ElementCollection
+    private Set<String> stage_manager = new HashSet<>();
+    @ElementCollection
+    private Set<String> organizer_in = new HashSet<>();
+    @ElementCollection
+    private Set<String> staff_in = new HashSet<>();
 
     // Constructors, Getters, Setters, etc.
 
