@@ -5,12 +5,16 @@ import com.second.festivalmanagementsystem.model.User;
 import com.second.festivalmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Base64;
 import java.util.Optional;
 
 @Service
 public class UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -43,17 +47,17 @@ public class UserService {
 
     public User validateUser(String authHeader) throws UserException {
         if (authHeader != null && authHeader.startsWith("Basic ")) {
-            System.out.println(authHeader);
+            logger.debug("Authorization header received: {}", authHeader);
             String base64Credentials = authHeader.substring("Basic ".length());
             String credentials = new String(Base64.getDecoder().decode(base64Credentials));
             String[] values = credentials.split(":", 2);
-            System.out.println(values[0]);
+            logger.debug("Extracted username: {}", values[0]);
             String username = values[0];
             String password = values[1];
 
             Optional<User> user = userRepository.findByUsername(username);
             if (!user.isPresent()) {
-                System.out.println("no user found with username: " + username);
+                logger.warn("No user found with username: {}", username);
                 throw new UserException("Username does not exists");
             }
             if (!user.get().getPassword().equals(password)) {

@@ -4,7 +4,6 @@ import com.second.festivalmanagementsystem.enums.FestivalState;
 import com.second.festivalmanagementsystem.exceptions.FestivalException;
 import com.second.festivalmanagementsystem.model.Festival;
 import com.second.festivalmanagementsystem.model.User;
-import com.second.festivalmanagementsystem.repository.CustomFestivalRepository;
 
 import com.second.festivalmanagementsystem.repository.FestivalRepository;
 import com.second.festivalmanagementsystem.repository.UserRepository;
@@ -99,7 +98,7 @@ public class FestivalService {
         Festival festival = festivalRepository.findById(id)
                 .orElseThrow(() -> new FestivalException("Festival not found."));
         if (festival.getState() != FestivalState.SUBMISSION) {
-            throw new FestivalException("Only festivals in SUBMITTED state can be assigned.");
+            throw new FestivalException("Only festivals in SUBMISSION state can be assigned.");
         }else{
             festival.setState(FestivalState.ASSIGNMENT);
             festivalRepository.save(festival);
