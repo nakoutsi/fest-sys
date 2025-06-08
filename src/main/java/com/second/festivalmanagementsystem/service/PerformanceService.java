@@ -70,7 +70,20 @@ public class PerformanceService {
         performanceRepository.deleteById(id);
     }
     public List<Performance> searchPerformances(String genre, String festivalId) {
-        return performanceRepository.findByCriteria(genre, festivalId);
+        boolean hasGenre = genre != null && !genre.isEmpty();
+        boolean hasFestival = festivalId != null && !festivalId.isEmpty();
+
+        if (hasGenre && hasFestival) {
+            return performanceRepository.findByCriteria(genre, festivalId);
+        }
+        if (hasGenre) {
+            return performanceRepository.findByGenre(genre);
+        }
+        if (hasFestival) {
+            return performanceRepository.findByFestival_Id(festivalId);
+        }
+
+        return performanceRepository.findAll();
     }
 
     public Performance submitPerformance(String id, User loggedUser) throws FestivalException {
