@@ -92,9 +92,9 @@ public class FestivalController {
         }
     }
 
-    // Get all festivals
+    // Get a festival by ID
     @GetMapping("/{id}")
-    public ResponseEntity<?> getAllFestivals(@RequestHeader("Authorization") String authHeader,@PathVariable String id) {
+    public ResponseEntity<?> getFestivalById(@RequestHeader("Authorization") String authHeader,@PathVariable String id) {
         return ResponseEntity.ok(festivalService.getFestivalById(id));
     }
 
