@@ -24,6 +24,7 @@ public class Performance {
     @ManyToOne
     @JoinColumn(name = "festival_id")
     private Festival festival; // Reference to Festival
+    @ElementCollection
     private List<String> bandMembers; // User IDs of band members
     private String technicalRequirements; // File path or content
     private PerformanceState state; // Possible values: CREATED, SUBMITTED, REVIEWED, etc.
