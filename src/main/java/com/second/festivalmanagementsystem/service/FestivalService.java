@@ -4,7 +4,6 @@ import com.second.festivalmanagementsystem.enums.FestivalState;
 import com.second.festivalmanagementsystem.exceptions.FestivalException;
 import com.second.festivalmanagementsystem.model.Festival;
 import com.second.festivalmanagementsystem.model.User;
-import com.second.festivalmanagementsystem.repository.CustomFestivalRepository;
 
 import com.second.festivalmanagementsystem.repository.FestivalRepository;
 import com.second.festivalmanagementsystem.repository.UserRepository;
