@@ -91,9 +91,7 @@ public class PerformanceService {
     }
 
     public Performance addArtist(String id, User loggedUser, String artist) throws PerformanceException {
-        Optional<User> artistUser = Optional.empty();
-
-        artistUser = userRepository.findByUsername(artist);
+        Optional<User> artistUser = userRepository.findByUsername(artist);
         if (!artistUser.isPresent()) {
             throw new PerformanceException("Artist username does not exist");
         }
