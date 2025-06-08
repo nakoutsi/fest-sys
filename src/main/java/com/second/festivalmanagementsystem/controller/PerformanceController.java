@@ -3,7 +3,6 @@ package com.second.festivalmanagementsystem.controller;
 import com.second.festivalmanagementsystem.enums.PerformanceState;
 import com.second.festivalmanagementsystem.exceptions.FestivalException;
 import com.second.festivalmanagementsystem.exceptions.PerformanceException;
-import com.second.festivalmanagementsystem.exceptions.UserException;
 import com.second.festivalmanagementsystem.model.Performance;
 import com.second.festivalmanagementsystem.model.User;
 import com.second.festivalmanagementsystem.service.FestivalService;
@@ -12,6 +11,7 @@ import com.second.festivalmanagementsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -30,19 +30,14 @@ public class PerformanceController {
 
     // Create a new performance
     @PostMapping("/{id}")
-    public ResponseEntity<?> createPerformance(@RequestBody Performance performance,@PathVariable String id, @RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<?> createPerformance(@RequestBody Performance performance,@PathVariable String id, Authentication authentication) {
         try {
             // Validate required fields
             if (performance.getName() == null || performance.getDescription() == null || performance.getGenre() == null) {
                 return ResponseEntity.badRequest().body("Missing required fields: name, description, or genre.");
             }
 
-            User loggedUser = null;
-            try {
-                loggedUser = userService.validateUser(authHeader);
-            } catch (UserException e) {
-                return ResponseEntity.status(400).body("wrong username or password");
-            }
+            User loggedUser = userService.getUserByUsername(authentication.getName());
 
             performance.setState(PerformanceState.CREATED); // Default state
             Performance createdPerformance = performanceService.createPerformance(performance, loggedUser, id);
@@ -54,14 +49,9 @@ public class PerformanceController {
         }
     }
     @PutMapping("/{id}/submit")
-    public ResponseEntity<?> submitPerformance(@PathVariable String id,  @RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<?> submitPerformance(@PathVariable String id, Authentication authentication) {
         try {
-            User loggedUser = null;
-            try {
-                loggedUser = userService.validateUser(authHeader);
-            } catch (UserException e) {
-                return ResponseEntity.status(400).body("wrong username or password");
-            }
+            User loggedUser = userService.getUserByUsername(authentication.getName());
 
             // Change state to SUBMITTED
             Performance submittedPerformance = performanceService.submitPerformance(id, loggedUser);
@@ -87,13 +77,8 @@ public class PerformanceController {
     }
 
     @PostMapping("/{id}/addartist")
-    public ResponseEntity<?> addArtists(@RequestHeader("Authorization") String authHeader, @PathVariable String id, @RequestBody String artist ) {
-        User loggedUser = null;
-        try {
-            loggedUser = userService.validateUser(authHeader);
-        } catch (UserException e) {
-            return ResponseEntity.status(400).body("wrong username or password");
-        }
+    public ResponseEntity<?> addArtists(Authentication authentication, @PathVariable String id, @RequestBody String artist ) {
+        User loggedUser = userService.getUserByUsername(authentication.getName());
 
 
         try {
