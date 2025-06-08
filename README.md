@@ -56,7 +56,9 @@ curl -X POST http://localhost:8080/api/users/register \
      -d '{"username":"alice","password":"secret","fullName":"Alice"}'
 
 # Authenticate
-curl -X POST "http://localhost:8080/api/users/login?username=alice&password=secret"
+curl -X POST http://localhost:8080/api/users/login \
+     -H "Content-Type: application/json" \
+     -d '{"username":"alice","password":"secret"}'
 ```
 
 ### Creating a Festival
