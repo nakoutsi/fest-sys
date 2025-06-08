@@ -166,18 +166,24 @@ public class FestivalService {
         Festival festival = festivalRepository.findById(id)
                 .orElseThrow(() -> new FestivalException("Festival not found."));
 
+        List<User> usersToSave = new ArrayList<>();
+
         for (String organizer : organizers) {
-            Optional<User> optioonaluser = userRepository.findByUsername(organizer);
-            if (optioonaluser.isPresent()) {
-                festival.getOrganizers().add(optioonaluser.get());
-                optioonaluser.get().getOrganizer_in().add(festival.getId());
-                festivalRepository.save(festival);
-                userRepository.save(optioonaluser.get());
+            Optional<User> optionalUser = userRepository.findByUsername(organizer);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                festival.getOrganizers().add(user);
+                user.getOrganizer_in().add(festival.getId());
+                usersToSave.add(user);
             }
             else{
                 throw new FestivalException("User " + organizer + " does not exist.");
             }
         }
+
+        festivalRepository.save(festival);
+        userRepository.saveAll(usersToSave);
+
         return "All users were added as organizers!";
     }
 
@@ -186,18 +192,24 @@ public class FestivalService {
         Festival festival = festivalRepository.findById(id)
                 .orElseThrow(() -> new FestivalException("Festival not found."));
 
+        List<User> usersToSave = new ArrayList<>();
+
         for (String staffboy : staff) {
-            Optional<User> optioonaluser = userRepository.findByUsername(staffboy);
-            if (optioonaluser.isPresent()) {
-                festival.getStaff().add(optioonaluser.get());
-                optioonaluser.get().getStaff_in().add(festival.getId());
-                festivalRepository.save(festival);
-                userRepository.save(optioonaluser.get());
+            Optional<User> optionalUser = userRepository.findByUsername(staffboy);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                festival.getStaff().add(user);
+                user.getStaff_in().add(festival.getId());
+                usersToSave.add(user);
             }
             else{
                 throw new FestivalException("User " + staffboy + " does not exist.");
             }
         }
+
+        festivalRepository.save(festival);
+        userRepository.saveAll(usersToSave);
+
         return "All users were added as staff!";
     }
 
