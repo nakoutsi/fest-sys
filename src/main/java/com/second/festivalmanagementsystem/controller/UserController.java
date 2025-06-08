@@ -27,9 +27,11 @@ public class UserController {
 
     // Authenticate a user
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<?> loginUser(@RequestBody User loginRequest) {
         try {
-            User authenticatedUser = userService.authenticateUser(username, password);
+            User authenticatedUser = userService.authenticateUser(
+                    loginRequest.getUsername(),
+                    loginRequest.getPassword());
             return ResponseEntity.ok(authenticatedUser);
         } catch (IllegalArgumentException ex) {
             // Handle invalid credentials case
