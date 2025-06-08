@@ -29,12 +29,16 @@ public class PerformanceService {
     @Autowired
     private FestivalRepository festivalRepository;
 
-    public Performance createPerformance(Performance performance, User loggedUser, String festivalId) throws FestivalException {
+    public Performance createPerformance(Performance performance, User loggedUser, String festivalId) throws FestivalException, PerformanceException {
         Festival festival = festivalRepository.findById(festivalId)
                 .orElseThrow(() -> new FestivalException("Festival not found."));
 
         if (festival.getStaff().contains(loggedUser) || festival.getOrganizers().contains(loggedUser)) {
             throw new FestivalException("User cannot perform this performance as he is organizer or staff.");
+        }
+
+        if (performanceRepository.findByNameAndFestival_Id(performance.getName(), festivalId).isPresent()) {
+            throw new PerformanceException("Performance already exists for this festival.");
         }
 
         festival.getPerformances().add(performance);
@@ -70,7 +74,20 @@ public class PerformanceService {
         performanceRepository.deleteById(id);
     }
     public List<Performance> searchPerformances(String genre, String festivalId) {
-        return performanceRepository.findByCriteria(genre, festivalId);
+        boolean hasGenre = genre != null && !genre.isEmpty();
+        boolean hasFestival = festivalId != null && !festivalId.isEmpty();
+
+        if (hasGenre && hasFestival) {
+            return performanceRepository.findByCriteria(genre, festivalId);
+        }
+        if (hasGenre) {
+            return performanceRepository.findByGenre(genre);
+        }
+        if (hasFestival) {
+            return performanceRepository.findByFestival_Id(festivalId);
+        }
+
+        return performanceRepository.findAll();
     }
 
     public Performance submitPerformance(String id, User loggedUser) throws FestivalException {

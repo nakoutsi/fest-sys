@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PerformanceRepository extends JpaRepository<Performance, String> {
     // Find performances by festival ID
@@ -22,6 +23,8 @@ public interface PerformanceRepository extends JpaRepository<Performance, String
 
     // Find performances by festival ID and state
     List<Performance> findByFestival_IdAndState(String festivalId, PerformanceState state);
+
+    Optional<Performance> findByNameAndFestival_Id(String name, String festivalId);
 
     @Query("SELECT p FROM Performance p WHERE p.genre = ?1 AND p.festival.id = ?2")
     List<Performance> findByCriteria(String genre, String festivalId);
