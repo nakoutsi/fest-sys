@@ -62,7 +62,6 @@ public class Festival {
     private Set<User> staff = new HashSet<>();
 
 
-    // Constructors, Getters, Setters, etc.
 
     public Festival() {
     }
