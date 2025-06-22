@@ -29,17 +29,17 @@ public class Festival {
     @NotNull(message = "Festival's description must not be null")
     private String description;
 
-    @NotNull(message = "Festival's description must not be null")
+    @NotNull(message = "Festival start date must not be null")
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
-    @NotNull(message = "Festival's description must not be null")
+    @NotNull(message = "Festival end date must not be null")
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
-    @NotNull(message = "Festival's description must not be null")
+    @NotNull(message = "Festival venue must not be null")
     private String venue;
 
     private String budget;
