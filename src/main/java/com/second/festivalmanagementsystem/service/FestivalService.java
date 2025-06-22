@@ -165,6 +165,10 @@ public class FestivalService {
         Festival festival = festivalRepository.findById(id)
                 .orElseThrow(() -> new FestivalException("Festival not found."));
 
+        if (!festival.getOrganizers().contains(loggedUser)) {
+            throw new FestivalException("User is not organizer in this festival.");
+        }
+
         List<User> usersToSave = new ArrayList<>();
 
         for (String organizer : organizers) {
@@ -190,6 +194,10 @@ public class FestivalService {
     public String addStaff(String id, User loggedUser, ArrayList<String> staff) throws FestivalException {
         Festival festival = festivalRepository.findById(id)
                 .orElseThrow(() -> new FestivalException("Festival not found."));
+
+        if (!festival.getOrganizers().contains(loggedUser)) {
+            throw new FestivalException("User is not organizer in this festival.");
+        }
 
         List<User> usersToSave = new ArrayList<>();
 
