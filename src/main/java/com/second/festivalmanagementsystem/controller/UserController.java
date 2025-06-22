@@ -1,6 +1,7 @@
 package com.second.festivalmanagementsystem.controller;
 
 import com.second.festivalmanagementsystem.model.User;
+import com.second.festivalmanagementsystem.dto.UserResponseDto;
 import com.second.festivalmanagementsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,8 @@ public class UserController {
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         try {
             User registeredUser = userService.registerUser(user);
-            return ResponseEntity.ok(registeredUser);
+            UserResponseDto dto = UserResponseDto.fromUser(registeredUser);
+            return ResponseEntity.ok(dto);
         } catch (IllegalArgumentException ex) {
             // Handle duplicate username case
             return ResponseEntity.badRequest().body("Username already exists.");
@@ -32,7 +34,8 @@ public class UserController {
             User authenticatedUser = userService.authenticateUser(
                     loginRequest.getUsername(),
                     loginRequest.getPassword());
-            return ResponseEntity.ok(authenticatedUser);
+            UserResponseDto dto = UserResponseDto.fromUser(authenticatedUser);
+            return ResponseEntity.ok(dto);
         } catch (IllegalArgumentException ex) {
             // Handle invalid credentials case
             return ResponseEntity.badRequest().body("Invalid username or password.");
