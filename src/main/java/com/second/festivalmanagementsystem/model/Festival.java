@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,9 +30,13 @@ public class Festival {
     private String description;
 
     @NotNull(message = "Festival's description must not be null")
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
     @NotNull(message = "Festival's description must not be null")
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
     @NotNull(message = "Festival's description must not be null")
