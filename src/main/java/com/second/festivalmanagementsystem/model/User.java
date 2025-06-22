@@ -1,6 +1,7 @@
 package com.second.festivalmanagementsystem.model;
 
 import jakarta.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,7 @@ public class User {
     @NotNull(message = "User's username must not be null")
     private String username;
     @NotNull(message = "User's password must not be null")
+    @JsonIgnore
     private String password;
     @NotNull(message = "User's full name must not be null")
     private String fullName;
